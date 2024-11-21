@@ -1,0 +1,172 @@
+{
+	"title": "Domain Prediction System",
+	"header": {
+		"logout": "Logout",
+		"lang": "English/中文",
+		"theme": "Change Theme",
+		"auto": "Auto",
+		"login": "Login",
+		"changePwd": "Change Password",
+		"form": {
+			"oldPwd": "Old Password",
+			"newPwd": "New Password"
+		}
+	},
+	"menu": {
+		"home": "Home",
+		"search": "Search",
+		"example": "Example",
+		"help": "Help",
+		"record": "Records",
+		"user": "Users"
+	},
+	"page": {
+		"login": {
+			"text": "Login",
+			"username": "Username",
+			"password": "Password",
+			"again": "Confirm Password",
+			"input": "Please Input {{name}}",
+			"usernameTip": "Username must combined with numbers or letters, and length between 5-20",
+			"pwdTip": "Password must combined with numbers, letters and special characters, and length between 8-32",
+			"register": "No account? Register now",
+			"notSamePwd": "The new password that you entered do not match!"
+		},
+		"home": {
+			"title": "Mixed Methods Based Protein Domain Prediction System",
+			"desc": "MM-PDPS(Mixed Methods Based Protein Domain Prediction System) is a web server for protein domain prediction. It integrates multiple methods to predict protein domain boundaries, including the domain conservation score, the secondary structure, the relative solvent accessibility, the accessible surface area, and domain functions. The server also provides a user-friendly interface for users to edit the predicted domain boundaries and to detect the discontinuous domains.",
+			"intro": "Introduction",
+			"submit": "Submit",
+			"seq": "Sequence",
+			"file": "File",
+			"form": {
+				"seqHolder": "Please input the raw format sequence with length ≥ 80",
+				"seqTip": "Please input the sequence with length ≥ 80",
+				"seqFormatError": "Amino acid sequences can only contain ACDEFGHIKLMNPQRSTVWY",
+				"noFile": "Please select a file",
+				"seqLenError": "Please select a file with sequence length ≥ 80",
+				"nameHolder": "Please input the protein sequence name",
+				"nameTip": "Please input the sequence name",
+				"name": "Sequence Name",
+				"email": "Email (optional)",
+				"emailHolder": "Please input the email address",
+				"submit": "Submit",
+				"reset": "Reset",
+				"advanced": "Advanced options",
+				"predict": "Domain boundaries prediction",
+				"secStructure": "Secondary structure prediction",
+				"blast": "Blast alignment",
+				"function": "Domain function prediction",
+				"ta": "Template alignment based method",
+				"rn": "ResNet based method",
+				"mm": "Mixed based method",
+				"ns": "NetSurfP2",
+				"pp": "PssPred",
+				"bp": "BlastPgp (blast)",
+				"pb": "PsiBlast (ncbi blast+)"
+			}
+		},
+		"search": {
+			"id": "Search by job id",
+			"seq": "Search by sequence",
+			"idHolder": "Please input the job id",
+			"idLabel": "Job ID",
+			"seqHolder": "Please input the EXACT sequence you submitted",
+			"seqLabel": "Exact sequence",
+			"history": "Search History",
+			"clear": "Clear"
+		},
+		"result": {
+			"noResult": "Not found",
+			"single": "It is a Single Protein Domain",
+			"info": "Task information",
+			"result": "Prediction Result",
+			"taskId": "Task ID",
+			"status": "Status",
+			"sequence": "Target sequence",
+			"seqName": "Sequence name",
+			"coordinates": "Coordinates",
+			"template": "Template",
+			"bulge": "Bulge",
+			"type": "Type",
+			"number": "Domain Number",
+			"domain": "Domain(s)",
+			"merge": "up to merge",
+			"init": "Initiate",
+			"save": "Save",
+			"func": "Function",
+			"segment": "Domain Segment {{index}}",
+			"loading": "Loading...",
+			"statusText": {
+				"submitted": "Submitted",
+				"waiting": "Waiting",
+				"running": "Running",
+				"finished": "Finished"
+			},
+			"graph": {
+				"target": "Domain Partition",
+				"score": "Domain Conservation Score",
+				"secStructure": "Predicted Secondary Structure",
+				"rsa": "Relative Solvent Accessibility",
+				"asa": "Accessible Surface Area",
+				"cutoff": "Cutoff",
+				"segment": "Segment Line",
+				"strand": "Strand",
+				"helix": "Helix",
+				"coil": "Coil",
+				"predict": "Predicted Domain",
+				"dcd": "Optimization and DCD Detection",
+				"boundaryUser": "Boundaries Edition by user",
+				"dcdUser": "DCD Detection by user"
+			},
+			"explanations": {
+				"target": "Visualization of the input sequence with the predicted domain segments shown in different colors",
+				"score": "Deduced from multiple threading alignments. It allows the user to move the horizontal line to change the cutoff; or to move the vertical line to refine the boundary; or add new boundary by right-click",
+				"secStructure": "The predicted secondary structure by NetSurfP2 which can be used as reference to refine the boundaries",
+				"rsa": "The predicted relative solvent accessibility which can be used together with predicted secondary structure to refine the boundaries",
+				"asa": "The predicted accessible surface area which can be used together with predicted secondary structure to refine the boundaries",
+				"predict": "The domain segment predicted by the Domain Conversation Score with the default cutoff",
+				"dcd": "Boundaries optimization or discontinuous protein domains detection by the boundary cluster methods based on the predicted boundaries",
+				"boundaryUser": "Change or refinement of the predicted boundaries by the users. The change can be saved, rollbacked or initiated. Furthermore, it also allows the user to re-detect the discontinuous domains according to user’s editing by clicking the DCD Detect button",
+				"dcdUser": "The server will re-detect the discontinuous domains if there are not less than 3 segments after the user's edit. The DCD detection by the boundary clustering method is very fast. If the boundary clustering method does not detect discontinuous domains, DomEX will be used to further detect. It will take about 2-5 hours to detect the putative discontinuous domains with DomEx, which need search a library with 23,671,485 single domain sequences for each putative domain by Blast+"
+			},
+			"tableHeader": {
+				"no": "No.",
+				"threading": "Threading",
+				"sequence": "Sequence"
+			}
+		},
+		"record": {
+			"title": "Prediction Task Records",
+			"list": "Record List",
+			"form": {
+				"all": "All",
+				"create": "Create Time",
+				"day": "Last {{day}} Days"
+			},
+			"email": "Email",
+			"user": "Submission User",
+			"action": "Action",
+			"detail": "Check Detail"
+		},
+		"user": {
+			"title": "User Account Management",
+			"list": "User Account list",
+			"time": "Last Login Time",
+			"role": "User Role",
+			"admin": "Admin",
+			"guest": "Guest",
+			"del": "Delete",
+			"tip": "Delete User {{name}}",
+			"text": "Are you sure to delete this user?",
+			"Y": "Yes",
+			"N": "No"
+		},
+		"403": {
+			"desc": "Sorry, you don't have access to this page. Please contact the administrator!"
+		}
+	},
+	"antd": {
+		"paginationTotal": "Total {{total}} items"
+	}
+}

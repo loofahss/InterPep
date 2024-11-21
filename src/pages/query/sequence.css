@@ -1,0 +1,5 @@
+.sequence {
+  word-wrap: break-word; /* 对长单词进行换行 */
+  overflow-wrap: break-word; /* 兼容性更好 */
+  max-width: 100%; /* 保证不超出容器宽度 */
+}

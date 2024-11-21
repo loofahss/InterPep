@@ -1,0 +1,269 @@
+{
+  "info": {
+    "description": "The api of Neuropeptide tools",
+    "title": "The api of Neuropeptide tools",
+    "version": "0.1.0"
+  },
+  "tags": [],
+  "servers": [
+    {
+      "name": "Production Server",
+      "url": "http://bioinfo.isyslab.info/DeepNeuropePred"
+    }
+  ],
+  "paths": {
+    "/submit": {
+      "post": {
+        "parameters": [],
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaskId"
+                }
+              }
+            },
+            "description": "Successful response"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationError"
+                }
+              }
+            },
+            "description": "Validation error"
+          }
+        },
+        "tags": [
+          "Neuropeptide clevage site prediction"
+        ],
+        "summary": " ",
+        "description": "submit peptide sequence",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Sequence"
+              },
+              "example": {
+                "email": "your email",
+                "sequence": ">A0A088MI\nMAFLKKSLFLVLFLGVVSLSFCEEEKREEHEEEKRDEEDAESLGKRYGGLSPLRISKRVPPGFTPFRSPARSISGLTPIRLSKRVPPGFTPFRSPARRISEADPGFTPSFVVIKGLSPLRGKRRPPGFSPFRVD"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/submit-neuropred-esm": {
+      "post": {
+        "parameters": [],
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaskId"
+                }
+              }
+            },
+            "description": "Successful response"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationError"
+                }
+              }
+            },
+            "description": "Validation error"
+          }
+        },
+        "tags": [
+          "Neuropeptide prediction"
+        ],
+        "summary": " ",
+        "description": "submit peptide sequence",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Sequence"
+              },
+              "example": {
+                "email": "your email",
+                "sequence": ">test\nHJKSDFBKJSAFBNDJKA"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/status-api/{task_id}": {
+      "get": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "task_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful response"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationError"
+                }
+              }
+            },
+            "description": "Validation error"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPError"
+                }
+              }
+            },
+            "description": "Not found"
+          }
+        },
+        "tags": [
+          "Neuropeptide clevage site prediction"
+        ],
+        "summary": " ",
+        "description": "submit protein sequence",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TaskId"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/esm-status-api/{task_id}": {
+      "get": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "task_id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful response"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPError"
+                }
+              }
+            },
+            "description": "Not found"
+          }
+        },
+        "tags": [
+          "Neuropeptide prediction"
+        ],
+        "summary": " ",
+        "description": "submit peptide sequence"
+      }
+    }
+  },
+  "openapi": "3.0.3",
+  "components": {
+    "schemas": {
+      "ValidationError": {
+        "properties": {
+          "detail": {
+            "type": "object",
+            "properties": {
+              "<location>": {
+                "type": "object",
+                "properties": {
+                  "<field_name>": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "HTTPError": {
+        "properties": {
+          "detail": {
+            "type": "object"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "Sequence": {
+        "type": "object",
+        "properties": {
+          "fasta_file": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "email",
+          "fasta_file"
+        ]
+      },
+      "TaskId": {
+        "type": "object",
+        "properties": {
+          "task_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "task_id"
+        ]
+      }
+    }
+  }
+}
