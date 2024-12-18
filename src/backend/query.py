@@ -12,9 +12,9 @@ CORS(app, resources={r"/*": {"origins": "*"}})
 # 打开数据库连接
 def connect():
     return pymysql.connect(host='localhost',
-                           database='neuropenet',
-                           user='root',
-                           passwd='wingkin45')
+                        database='neuropenet',
+                        user='root',
+                        passwd='password')
 
 
 @app.route("/")
@@ -30,43 +30,65 @@ def query_protein(protein_id):
 # post_form
 
 
-#get proteinsequence
+# #get proteinsequence
+# @app.route("/query/proteinsequence", methods=["POST"])
+# def query_byprotein():
+#     data = request.json  # 使用 request.json 获取 JSON 数据
+#     protein_id = data.get("protein_id")
+#     db=connect()
+#     result = query_interface_info(db, protein_id)
+#     proteinsequence=query_protein_info(db,protein_id)
+#     print(proteinsequence)
+#     # print(protein_id)
+#     # print(result)
+#     return {"proteinsequence":proteinsequence}
+
+
 @app.route("/query/proteinsequence", methods=["POST"])
 def query_byprotein():
     data = request.json  # 使用 request.json 获取 JSON 数据
     protein_id = data.get("protein_id")
-    db=connect()
-    result = query_interface_info(db, protein_id)
-    proteinsequence=query_protein_info(db,protein_id)
-    print(proteinsequence)
-    # print(protein_id)
-    # print(result)
-    return {"proteinsequence":proteinsequence}
-
-#蛋白质actpeptide、pdbdata
-@app.route("/query/proteinact", methods=["POST"])
-def query_proteinact():
     db = connect()
-    cursor = db.cursor()
-    data = request.json
-    proteinid = data.get("proteinid")
-    sql = """
-            SELECT pp.PeptideId, pp.pdbData 
-            FROM Protein_Peptide pp
-            WHERE pp.ProteinId = %s
-            """
-    cursor.execute(sql, (proteinid,))
-    result = cursor.fetchall()
-    cursor.close()
-    db.close()
-    peptides = []
-    for row in result:
-        peptides.append({
-            "PeptideId": row[0],
-            "pdbData": row[1]
-        })
     
-    return jsonify(peptides)
+    try:
+        cursor = db.cursor()
+        # 查询 proteinsequence
+        proteinsequence_query = "SELECT proteinsequence FROM proteins WHERE proteinid = %s"
+        cursor.execute(proteinsequence_query, (protein_id,))
+        proteinsequence = cursor.fetchone()[0]
+
+        # 查询 peptides
+        peptides_query = """
+            SELECT pp1.peptideid, p.peptideSequence, pp1.PEI 
+            FROM protein_peptide AS pp1
+            JOIN peptides AS p ON pp1.peptideid = p.peptideid
+            WHERE pp1.proteinid =%s
+        """
+        cursor.execute(peptides_query, (protein_id,))
+        peptide_records = cursor.fetchall()
+        
+        peptides = []
+        for peptide in peptide_records:
+            peptides.append({
+                'peptideid': peptide[0],
+                'peptideSequence': peptide[1],
+                'PEI': peptide[2]
+            })
+        
+        result = {
+            'proteinsequence': proteinsequence,
+            'peptides': peptides
+        }
+        print("peptidesequence:")
+        print(peptides)
+    except Exception as e:
+        result = {'error': f"Error querying protein information: {str(e)}"}
+    finally:
+        cursor.close()
+        db.close()
+    
+    return jsonify(result)
+
 @app.route("/query/peptideact", methods=["POST"])
 def query_peptideact():
     db=connect()

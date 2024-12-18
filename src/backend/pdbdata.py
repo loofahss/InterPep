@@ -5,7 +5,7 @@ import os
 db = pymysql.connect(host='localhost',
                      database='neuropenet',
                      user='root',
-                     password='wingkin45')
+                     password='passwprd')
 
 cursor = db.cursor()
 
@@ -58,10 +58,10 @@ def insert_pdb_data_into_db(connection, folder_path):
     
     for protein_id, peptide_id, pdb_data in pdb_records:
         # 先插入 Proteins 和 Peptides 表
-        insert_protein(connection, protein_id)
+        # insert_protein(connection, protein_id)
         insert_peptide(connection, peptide_id)
         # 然后插入 Protein_Peptide 中间表
-        insert_protein_peptide_relation_with_pdb(cursor, protein_id, peptide_id, pdb_data)
+        # insert_protein_peptide_relation_with_pdb(cursor, protein_id, peptide_id, pdb_data)
 
 # 文件路径
 folder_path = "D:/code/PYTHON/neuropeptide/app/high"

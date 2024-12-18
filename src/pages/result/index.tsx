@@ -11,10 +11,18 @@ import { useLocation } from 'react-router-dom'
 import Structure from './components/Structure'
 import { Table } from 'antd/lib'
 import './index.less'
+export interface peptidedata {
+	peptideid: string
+	peptideSequence: string
+	PEI: string
+}
 const ResultPage = () => {
 	const [t] = useTranslation()
 	const location = useLocation()
 	const pdbdata = location.state?.tableData
+	// console.log('resultpage_pdbdata', pdbdata)
+	const peptides = location.state?.peptidedata
+	console.log('resultpage_peptides', peptides)
 	const query = getQuery()
 	const fetchScreenData = useCallback(async () => {
 		if (!query.id) return undefined
@@ -26,7 +34,10 @@ const ResultPage = () => {
 		queryKey: ['searchId', query],
 		queryFn: fetchScreenData
 	})
-
+	const { isLoading: isPeptideLoading, data: peptidedata } = useQuery<Peptide>({
+		queryKey: ['searchId', query],
+		queryFn: fetchScreenData
+	})
 	const descriptionItems = useMemo<DescriptionsProps['items']>(() => {
 		if (!data) return []
 		const items = [
@@ -49,7 +60,27 @@ const ResultPage = () => {
 		]
 		return items
 	}, [data])
-
+	// const descriptionpeptides = useMemo<DescriptionsProps['items']>(() => {
+	// 	if (!peptidedata) return []
+	// 	const items: peptidedata[] = [
+	// 		{
+	// 			peptideid: '1',
+	// 			peptideSequence: 'Sequence1',
+	// 			PEI: 'PEI1'
+	// 		},
+	// 		{
+	// 			peptideid: '2',
+	// 			peptideSequence: 'Sequence2',
+	// 			PEI: 'PEI2'
+	// 		},
+	// 		{
+	// 			peptideid: '3',
+	// 			peptideSequence: 'Sequence3',
+	// 			PEI: 'PEI3'
+	// 		}
+	// 	]
+	// 	return items
+	// }, [data])
 	const exportImage = (uri: string, t: string) => {
 		const a = document.createElement('a')
 		a.href = uri
@@ -60,53 +91,50 @@ const ResultPage = () => {
 	if (isLoading) {
 		return <div>loading...</div>
 	}
+	if (isPeptideLoading) {
+		return <div>loading...</div>
+	}
 
 	// if (!data) {
 	//     return <Result status='404' title={t('page.result.noResult')} />
 	// }
 
-	interface Peptide {
-		peptideid: string
-		peptideSequence: string
-		PEI: string
-	}
-
-	const peptides: Peptide[] = [
-		{ peptideid: '1', peptideSequence: 'Sequence1', PEI: 'PEI1' },
-		{ peptideid: '2', peptideSequence: 'Sequence2', PEI: 'PEI2' },
-		{ peptideid: '3', peptideSequence: 'Sequence3', PEI: 'PEI3' }
-	]
+	// const peptides: peptidedata[] = [
+	// 	{ peptideid: '1', peptidesequence: 'Sequence1', PEI: 'PEI1' },
+	// 	{ peptideid: '2', peptidesequence: 'Sequence2', PEI: 'PEI2' },
+	// 	{ peptideid: '3', peptidesequence: 'Sequence3', PEI: 'PEI3' }
+	// ]
 
 	const columns = [
 		{
 			title: 'ID',
-			dataIndex: 'peptideid',
-			key: 'peptideid'
+			dataIndex: 'id',
+			key: 'id'
 		},
 		{
 			title: 'Sequence',
-			dataIndex: 'peptideSequence',
-			key: 'peptideSequence'
+			dataIndex: 'sequence',
+			key: 'sequence'
 		},
 		{
 			title: 'PEI',
-			dataIndex: 'PEI',
+			dataIndex: 'pei',
 			key: 'PEI'
 		}
 	]
 
-	const PeptideList: React.FC = () => {
-		return (
-			<div>
-				<Table
-					columns={columns}
-					dataSource={peptides}
-					rowKey={item => item.peptideid}
-					className='mt-[20px]'
-				/>
-			</div>
-		)
-	}
+	// const PeptideList: React.FC = () => {
+	// 	return (
+	// 		<div>
+	// 			<Table
+	// 				columns={columns}
+	// 				dataSource={descriptionpeptides}
+	// 				rowKey={item => item.peptideid}
+	// 				className='mt-[20px]'
+	// 			/>
+	// 		</div>
+	// 	)
+	// }
 
 	return (
 		<div className='result-page py-[20px]'>
@@ -115,7 +143,7 @@ const ResultPage = () => {
 					<Table
 						columns={columns}
 						dataSource={peptides}
-						rowKey={item => item.peptideid}
+						rowKey={item => item.id}
 						className='mt-[20px]'
 					/>
 				</div>
@@ -129,12 +157,12 @@ const ResultPage = () => {
 						Basic information&nbsp;
 						<Icon component={InformationSvg}></Icon>
 					</p>
-					<Descriptions
+					{/* <Descriptions
 						column={1}
 						className='bg-white'
 						bordered
 						items={descriptionItems}
-					/>
+					/> */}
 					<Divider className='my-[12px]' />
 					<p>
 						Structure&nbsp;

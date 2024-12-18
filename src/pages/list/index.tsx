@@ -9,7 +9,7 @@ interface Peptide {
 }
 
 const peptides: Peptide[] = [
-	{ protein: '1', peptide: 'Sequence1', PEI: 'PEI1' },
+	{ protein: '777', peptide: 'wtf', PEI: 'PEI1' },
 	{ protein: '2', peptide: 'Sequence2', PEI: 'PEI2' },
 	{ protein: '3', peptide: 'Sequence3', PEI: 'PEI3' }
 ]

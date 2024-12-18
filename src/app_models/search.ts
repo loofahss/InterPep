@@ -4,7 +4,11 @@ export interface TableData {
 	length: number
 	neuropeptide: string
 }
-
+export interface resulttable {
+	ID: string
+	peptideSequence: string
+	PEI: string
+}
 export interface Info {
 	submissionId: string
 	id: number

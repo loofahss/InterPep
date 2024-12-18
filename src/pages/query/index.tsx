@@ -23,7 +23,7 @@ import { useNavigate } from 'react-router-dom'
 import { case1, case2, case3, defaultCase } from './fields'
 import './index.less'
 const { Text, Link } = Typography
-import PeptideList from '../list'
+import type { Peptide, peptidedata } from '../result'
 const Search = () => {
 	const navigate = useNavigate()
 	const [query, setQuery] = useState<RuleGroupType>(defaultCase)
@@ -36,6 +36,7 @@ const Search = () => {
 	const [neuropeptideName, setNeuropeptideName] = useState<string>('') // Neuropeptide name状态
 	const [proteinSequence, setProteinSequence] = useState<string>('') // 保存返回的蛋白质序列
 	const [pdbData, setPdbData] = useState<TableData | null>(null)
+	const [peptidedata, setPeptides] = useState<peptidedata[] | null>(null)
 	const columns = [
 		{
 			title: 'ID',
@@ -91,7 +92,29 @@ const Search = () => {
 					protein_id: entryName // 使用 entryName 作为 protein_id
 				}
 			)
+			// const peptides: Peptide[] = response.data.peptides.map(
+			// 	(peptide: any) => ({
+			// 		id: peptide.id,
+			// 		sequence: peptide.sequence
+			// 	})
+			// )
+			console.log('response:', response)
+			const peptides: Peptide[] = (response.data.peptides || []).map(
+				(peptide: any) => ({
+					id: peptide.peptideid,
+					sequence: peptide.peptideSequence,
+					pei: peptide.PEI
+				})
+			)
+			
+			console.log('peptides0:', peptides[0])
+			
+			const proteinSequence = response.data.proteinsequence
+			console.log('proteinSequence:', proteinSequence)
+
 			setProteinSequence(response.data.proteinsequence)
+			setPeptides(peptides)
+			navigate('/result', { state: { peptidedata: peptides } })
 			message.success('Protein sequence retrieved successfully!')
 		} catch (error) {
 			message.error('Error fetching protein sequence')
@@ -130,15 +153,38 @@ const Search = () => {
 
 	// 调用后端接口查询蛋白质序列
 
+	// const search = () => {
+	// 	// console.log(entryName, neuropeptideName)
+	// 	const history: string = formatQuery(query, 'sql')
+	// 	const idx = histories!.findIndex(h => h === history)
+	// 	if (idx > -1) {
+	// 		histories!.splice(idx, 1)
+	// 	}
+	// 	const additionalCondition = [
+	// 		entryName ? `entry_name='${entryName}'` : '',
+	// 		neuropeptideName ? `neuropeptide_name='${neuropeptideName}'` : ''
+	// 	]
+	// 		.filter(Boolean)
+	// 		.join(' AND ')
+	// 	setHistories([history, ...histories!])
+	// 	setSql(
+	// 		`${history} ${additionalCondition ? `AND ${additionalCondition}` : ''}`
+	// 	)
+	// 	refetch()
+	// 	searchPdbData() // 查询PDB数据
+	// 	// searchProteinSequence()  // 查询后端的蛋白质序列
+	// }
 	const search = () => {
+		console.log('enrtyName:', entryName)
+		console.log('neuropeptideName:', neuropeptideName)
 		const history: string = formatQuery(query, 'sql')
 		const idx = histories!.findIndex(h => h === history)
 		if (idx > -1) {
 			histories!.splice(idx, 1)
 		}
 		const additionalCondition = [
-			entryName && `entry_name='${entryName}'`,
-			neuropeptideName && `neuropeptide_name='${neuropeptideName}'`
+			entryName ? `entry_name='${entryName}'` : '',
+			neuropeptideName ? `neuropeptide_name='${neuropeptideName}'` : ''
 		]
 			.filter(Boolean)
 			.join(' AND ')
@@ -147,8 +193,14 @@ const Search = () => {
 			`${history} ${additionalCondition ? `AND ${additionalCondition}` : ''}`
 		)
 		refetch()
-		searchPdbData() // 查询PDB数据
-		// searchProteinSequence()  // 查询后端的蛋白质序列
+
+		if (!neuropeptideName) {
+			console.log('searchProteinSequence')
+			searchProteinSequence() // 当 entryName 为空时调用 searchProteinSequence()
+		} else if (entryName && neuropeptideName) {
+			console.log('searchPdbData')
+			searchPdbData() // 当 entryName 和 neuropeptideName 都不为空时调用 searchPdbData()
+		}
 	}
 
 	const cases = [case1, case2, case3]
@@ -218,7 +270,7 @@ const Search = () => {
 						/>
 					</div>
 
-					<p>
+					{/* <p>
 						{sql && (
 							<>
 								Current SQL:&nbsp;
@@ -227,13 +279,22 @@ const Search = () => {
 								</Text>
 							</>
 						)}
-					</p>
+					</p> */}
 					<div>
 						<Button
 							type='primary'
 							size='large'
 							disabled={!query}
-							onClick={search}
+							// onClick={search}
+							onClick={() => {
+								search()
+								// setPdbData({
+								// 	id: 'example',
+								// 	sequence: 'example sequence',
+								// 	length: 123,
+								// 	neuropeptide: 'example neuropeptide'
+								// })
+							}}
 						>
 							Submit
 						</Button>
