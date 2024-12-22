@@ -103,12 +103,13 @@ const Search = () => {
 				(peptide: any) => ({
 					id: peptide.peptideid,
 					sequence: peptide.peptideSequence,
-					pei: peptide.PEI
+					pei: peptide.PEI,
+					pdb: peptide.pdb
 				})
 			)
-			
+
 			console.log('peptides0:', peptides[0])
-			
+
 			const proteinSequence = response.data.proteinsequence
 			console.log('proteinSequence:', proteinSequence)
 

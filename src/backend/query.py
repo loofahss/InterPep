@@ -59,7 +59,7 @@ def query_byprotein():
 
         # 查询 peptides
         peptides_query = """
-            SELECT pp1.peptideid, p.peptideSequence, pp1.PEI 
+            SELECT pp1.peptideid, p.peptideSequence, pp1.PEI ,pp1.pdbData
             FROM protein_peptide AS pp1
             JOIN peptides AS p ON pp1.peptideid = p.peptideid
             WHERE pp1.proteinid =%s
@@ -72,7 +72,8 @@ def query_byprotein():
             peptides.append({
                 'peptideid': peptide[0],
                 'peptideSequence': peptide[1],
-                'PEI': peptide[2]
+                'PEI': peptide[2],
+                'pdb': peptide[3]
             })
         
         result = {

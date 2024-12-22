@@ -15,25 +15,22 @@ export default function Structure({
 	const molRef = useRef<HTMLDivElement>(null)
 	const viewer = useRef<any>(null)
 	useEffect(() => {
-	if (!data || !molRef.current) return
-	viewer.current = mol.createViewer(molRef.current)
-	viewer.current.addModel(data.neuropeptide.pdbData[0], 'pdb') // 使用传入的 PDB 数据
-	viewer.current.zoomTo()
-	viewer.current.render()
-	viewer.current.setStyle(
-		{ chain: 'A' },
-		{ cartoon: { color: 'spectrum' } }
-	)
-	viewer.current.setStyle(
-		{ chain: 'B' },
-		{ stick: { colorscheme: 'orangeCarbon' } }
-	)
-	viewer.current.setStyle(
-		{ chain: 'C' },
-		{ sphere: { colorscheme: 'white' } }
-	)
-	viewer.current.zoom(1.1, 1000)
-}, [data])
+		if (!data || !molRef.current) return
+		viewer.current = mol.createViewer(molRef.current)
+		viewer.current.addModel(data.neuropeptide.pdbData[0], 'pdb') // 使用传入的 PDB 数据
+		viewer.current.zoomTo()
+		viewer.current.render()
+		viewer.current.setStyle({ chain: 'A' }, { cartoon: { color: 'spectrum' } })
+		viewer.current.setStyle(
+			{ chain: 'B' },
+			{ stick: { colorscheme: 'orangeCarbon' } }
+		)
+		viewer.current.setStyle(
+			{ chain: 'C' },
+			{ sphere: { colorscheme: 'white' } }
+		)
+		viewer.current.zoom(1.1, 1000)
+	}, [data])
 
 	const [style, setStyle] = useState<string>('complex')
 	const setting: any = {

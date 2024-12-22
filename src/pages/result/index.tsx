@@ -1,11 +1,17 @@
 import Icon from '@ant-design/icons'
 import { useQuery } from '@tanstack/react-query'
-import { Descriptions, DescriptionsProps, Divider, Typography } from 'antd'
+import {
+	Button,
+	Descriptions,
+	DescriptionsProps,
+	Divider,
+	Typography
+} from 'antd'
 import session from 'api/sys/session'
 import { TableData } from 'app_models/search'
 import InformationSvg from 'assets/icons/Information.svg?react'
 import { getQuery } from 'assets/js/publicFunc'
-import { useCallback, useMemo } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation } from 'react-router-dom'
 import Structure from './components/Structure'
@@ -15,11 +21,18 @@ export interface peptidedata {
 	peptideid: string
 	peptideSequence: string
 	PEI: string
+	pdb: string
 }
 const ResultPage = () => {
 	const [t] = useTranslation()
 	const location = useLocation()
 	const pdbdata = location.state?.tableData
+	// const initialPdbData = location.state?.tableData.neuropeptide
+	// const [pdbdata, setPdbdata] = useState(initialPdbData)
+	// const handleViewStructure = (pdb: string) => {
+	// 	console.log('pdb:', pdb)
+	// 	setPdbdata(pdb)
+	// }
 	// console.log('resultpage_pdbdata', pdbdata)
 	const peptides = location.state?.peptidedata
 	console.log('resultpage_peptides', peptides)
@@ -38,49 +51,7 @@ const ResultPage = () => {
 		queryKey: ['searchId', query],
 		queryFn: fetchScreenData
 	})
-	const descriptionItems = useMemo<DescriptionsProps['items']>(() => {
-		if (!data) return []
-		const items = [
-			{
-				key: '0',
-				label: 'Type',
-				children: 'RNA',
-				labelStyle: { width: '200px' }
-			},
-			{
-				key: '1',
-				label: 'Sequence',
-				children: data.sequence
-			},
-			{
-				key: '2',
-				label: 'Binding residues',
-				children: data.family
-			}
-		]
-		return items
-	}, [data])
-	// const descriptionpeptides = useMemo<DescriptionsProps['items']>(() => {
-	// 	if (!peptidedata) return []
-	// 	const items: peptidedata[] = [
-	// 		{
-	// 			peptideid: '1',
-	// 			peptideSequence: 'Sequence1',
-	// 			PEI: 'PEI1'
-	// 		},
-	// 		{
-	// 			peptideid: '2',
-	// 			peptideSequence: 'Sequence2',
-	// 			PEI: 'PEI2'
-	// 		},
-	// 		{
-	// 			peptideid: '3',
-	// 			peptideSequence: 'Sequence3',
-	// 			PEI: 'PEI3'
-	// 		}
-	// 	]
-	// 	return items
-	// }, [data])
+
 	const exportImage = (uri: string, t: string) => {
 		const a = document.createElement('a')
 		a.href = uri
@@ -94,16 +65,6 @@ const ResultPage = () => {
 	if (isPeptideLoading) {
 		return <div>loading...</div>
 	}
-
-	// if (!data) {
-	//     return <Result status='404' title={t('page.result.noResult')} />
-	// }
-
-	// const peptides: peptidedata[] = [
-	// 	{ peptideid: '1', peptidesequence: 'Sequence1', PEI: 'PEI1' },
-	// 	{ peptideid: '2', peptidesequence: 'Sequence2', PEI: 'PEI2' },
-	// 	{ peptideid: '3', peptidesequence: 'Sequence3', PEI: 'PEI3' }
-	// ]
 
 	const columns = [
 		{
@@ -120,7 +81,22 @@ const ResultPage = () => {
 			title: 'PEI',
 			dataIndex: 'pei',
 			key: 'PEI'
+		},
+		{
+			title: '3D Structure',
+			key: 'pdb',
+			dataIndex: 'pdb'
 		}
+		// {
+		// 	title: '3D Structure',
+		// 	key: 'pdb',
+		// 	dataIndex: 'pdb',
+		// 	render: (text: any, record: { pdb: string }) => (
+		// 		<Button onClick={() => handleViewStructure(record.pdb)}>
+		// 			View 3D Structure
+		// 		</Button>
+		// 	)
+		// }
 	]
 
 	// const PeptideList: React.FC = () => {
