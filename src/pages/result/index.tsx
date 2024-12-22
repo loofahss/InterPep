@@ -16,7 +16,6 @@ export interface peptidedata {
 	peptideSequence: string
 	PEI: string
 }
-hhh
 const ResultPage = () => {
 	const [t] = useTranslation()
 	const location = useLocation()
