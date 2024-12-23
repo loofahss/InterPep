@@ -17,7 +17,8 @@ export default function Structure({
 	useEffect(() => {
 		if (!data || !molRef.current) return
 		viewer.current = mol.createViewer(molRef.current)
-		viewer.current.addModel(data.neuropeptide.pdbData[0], 'pdb') // 使用传入的 PDB 数据
+		console.log('structure:', data, 'data.neuropeptide:', data.neuropeptide)
+		viewer.current.addModel(data.neuropeptide, 'pdb') // 使用传入的 PDB 数据
 		viewer.current.zoomTo()
 		viewer.current.render()
 		viewer.current.setStyle({ chain: 'A' }, { cartoon: { color: 'spectrum' } })

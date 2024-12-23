@@ -26,23 +26,30 @@ export interface peptidedata {
 const ResultPage = () => {
 	const [t] = useTranslation()
 	const location = useLocation()
-	const pdbdata = location.state?.tableData
-	// const initialPdbData = location.state?.tableData.neuropeptide
+	const initialpdbdata = location.state?.tableData
+	// const initialPdbData = location.state?.tableData
 	// const [pdbdata, setPdbdata] = useState(initialPdbData)
-	// const handleViewStructure = (pdb: string) => {
-	// 	console.log('pdb:', pdb)
-	// 	setPdbdata(pdb)
-	// }
+	const [pdbdata, setpdbdata] = useState<TableData | null>(initialpdbdata)
+
 	// console.log('resultpage_pdbdata', pdbdata)
 	const peptides = location.state?.peptidedata
-	console.log('resultpage_peptides', peptides)
+	// console.log('resultpage_peptides', peptides)
 	const query = getQuery()
 	const fetchScreenData = useCallback(async () => {
 		if (!query.id) return undefined
 		const data: any = await session.search({ id: query.id })
 		return data || undefined
 	}, [query])
-
+	const handleViewStructure = (pdb: string) => {
+		const tableData: TableData = {
+			id: peptides, // 根据实际情况填充
+			sequence: 'proteinSequence' || '', // 根据实际情况填充
+			length: 10 || 0,
+			neuropeptide: pdb
+		}
+		console.log('pdb:', tableData)
+		setpdbdata(tableData)
+	}
 	const { isLoading, data } = useQuery<TableData>({
 		queryKey: ['searchId', query],
 		queryFn: fetchScreenData
@@ -82,21 +89,21 @@ const ResultPage = () => {
 			dataIndex: 'pei',
 			key: 'PEI'
 		},
-		{
-			title: '3D Structure',
-			key: 'pdb',
-			dataIndex: 'pdb'
-		}
 		// {
 		// 	title: '3D Structure',
 		// 	key: 'pdb',
-		// 	dataIndex: 'pdb',
-		// 	render: (text: any, record: { pdb: string }) => (
-		// 		<Button onClick={() => handleViewStructure(record.pdb)}>
-		// 			View 3D Structure
-		// 		</Button>
-		// 	)
-		// }
+		// 	dataIndex: 'pdb'
+		// },
+		{
+			title: '3D Structure',
+			key: 'pdb',
+			dataIndex: 'pdb',
+			render: (text: any, record: { pdb: string }) => (
+				<Button onClick={() => handleViewStructure(record.pdb)}>
+					View 3D Structure
+				</Button>
+			)
+		}
 	]
 
 	// const PeptideList: React.FC = () => {

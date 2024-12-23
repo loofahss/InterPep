@@ -129,7 +129,12 @@ const Search = () => {
 				proteinid: entryName,
 				peptideid: neuropeptideName
 			})
-			const pdbString = response.data.pdbdata
+			const pdbDataArray = response.data.pdbdata
+			console.log('pdbDataArray:', pdbDataArray)
+
+			// 假设 pdbDataArray 是一个包含字符串的数组
+			const pdbString = pdbDataArray.pdbData[0]
+			// const pdbString = response.data.pdbdata
 			console.log('pdbString:', pdbString)
 			// 构造符合TableData格式的数据
 			const tableData: TableData = {
