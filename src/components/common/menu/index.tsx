@@ -84,7 +84,7 @@ export default function MenuView() {
 			<Link to={{ pathname: '/' }}>
 				<div className='logo flex items-center'>
 					<img alt='logo' src={logo} width='32' />
-					<h1 className={classNames('text-gray-50')}>LMPRBP</h1>
+					<h1 className={classNames('text-gray-50')}>ISYLab</h1>
 				</div>
 			</Link>
 		)

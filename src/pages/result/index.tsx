@@ -87,13 +87,27 @@ const ResultPage = () => {
 		{
 			title: 'PEI',
 			dataIndex: 'pei',
-			key: 'PEI'
+			key: 'PEI',
+			filters: [
+				{ text: 'High', value: 'high' },
+				{ text: 'Medium', value: 'medium' },
+				{ text: 'Low', value: 'low' }
+				// { text: 'From High to Low', value: 'fromHighToLow' }
+			],
+			onFilter: (value: string, record: { pei: number }) => {
+				if (value === 'high') {
+					return record.pei > 7 // 假设大于7为High
+				} else if (value === 'medium') {
+					return record.pei > 4 && record.pei <= 7 // 假设4到7为Medium
+				} else if (value === 'low') {
+					return record.pei <= 4 // 假设小于等于4为Low
+				} else if (value === 'fromHighToLow') {
+					return true // 这个选项不进行过滤，只是用于排序
+				}
+				return false
+			},
+			sorter: (a: { pei: number }, b: { pei: number }) => b.pei - a.pei // 添加排序功能
 		},
-		// {
-		// 	title: '3D Structure',
-		// 	key: 'pdb',
-		// 	dataIndex: 'pdb'
-		// },
 		{
 			title: '3D Structure',
 			key: 'pdb',
