@@ -3,7 +3,7 @@ import os
 
 # 打开数据库连接
 db = pymysql.connect(host='localhost',
-                    database='neuropeptide',
+                    database='neuropenet',
                     user='root',
                     password='your_password')
 
@@ -41,11 +41,18 @@ def load_multiplied_values(file_path):
         print(f"Error reading file {file_path}: {e}")
     return multiplied_values
 
-# 插入 Protein_Peptide 中间表数据
-def insert_protein_peptide_relation_with_pdb(cursor, protein_id, peptide_id, pdb_data):
-    query = "INSERT INTO Protein_Peptide (ProteinId, PeptideId, pdbData) VALUES (%s, %s, %s)"
+def get_pei(multiplied_values ,pdb_name):
+    pei = 0
     try:
-        cursor.execute(query, (protein_id, peptide_id, pdb_data))
+        pei = multiplied_values[pdb_name]
+    except KeyError:
+        print(f"Error: The PEI value for {pdb_name} was not found.")
+    return pei
+# 插入 Protein_Peptide 中间表数据
+def insert_protein_peptide_relation_with_pdb(cursor, protein_id, peptide_id, pdb_data, pei):
+    query = "INSERT INTO Protein_Peptide (ProteinId, PeptideId, pdbData,pei) VALUES (%s, %s, %s,%s)"
+    try:
+        cursor.execute(query, (protein_id, peptide_id, pdb_data, pei))
         print(f"Successfully inserted {protein_id}, {peptide_id}")
         db.commit()
     except Exception as e:
@@ -60,12 +67,15 @@ def read_pdb_files_from_folder(folder_path):
         if filename.endswith(".pdb"):  # 确保是PDB文件
             try:
                 protein_id, peptide_id = filename.split('and')[0], filename.split('and')[1].split('.')[0]
-                print(protein_id, peptide_id)
+                # print(protein_id, peptide_id)
+                pdb_name = filename.replace(".pdb", "")
+                pei = get_pei(multiplied_values, pdb_name)
+                print(protein_id, peptide_id, pei)
                 file_path = os.path.join(folder_path, filename)
                 with open(file_path, 'r') as file:
                     pdb_data = file.read()
 
-                pdb_records.append((protein_id, peptide_id, pdb_data))
+                pdb_records.append((protein_id, peptide_id, pdb_data, pei))
             except Exception as e:
                 print(f"Error processing file {filename}: {e}")
     
@@ -75,18 +85,20 @@ def read_pdb_files_from_folder(folder_path):
 def insert_pdb_data_into_db(connection, folder_path):
     pdb_records = read_pdb_files_from_folder(folder_path)
     
-    for protein_id, peptide_id, pdb_data in pdb_records:
+    for protein_id, peptide_id, pdb_data,pei in pdb_records:
         # 先插入 Proteins 和 Peptides 表
         # insert_protein(connection, protein_id)
         # insert_peptide(connection, peptide_id)
         # 然后插入 Protein_Peptide 中间表
-        insert_protein_peptide_relation_with_pdb(cursor, protein_id, peptide_id, pdb_data)
+        insert_protein_peptide_relation_with_pdb(cursor, protein_id, peptide_id, pdb_data,pei)
 
 # 文件路径
 # folder_path = "D:/code/PYTHON/neuropeptide/app/high"
-
+multiplied_values_file_path = "D:/code/neuropeptide/src/backend/api/pei.txt"
 folder_path="F:/out_folder"
 # 将数据插入数据库
+multiplied_values=load_multiplied_values(multiplied_values_file_path)
+
 insert_pdb_data_into_db(db, folder_path)
 
 # 关闭游标和连接

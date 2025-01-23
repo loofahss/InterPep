@@ -3,7 +3,6 @@ import { useCallback, useLayoutEffect, useMemo, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 
 import type { MenuProps } from 'antd'
-import logo from 'assets/img/logo.png'
 import { flattenRoutes, getKeyName } from 'assets/js/publicFunc'
 import classNames from 'classnames'
 import { useTranslation } from 'react-i18next'
@@ -82,15 +81,14 @@ export default function MenuView() {
 	function LogLink() {
 		return (
 			<Link to={{ pathname: '/' }}>
-				<div className='logo flex items-center'>
-					<img alt='logo' src={logo} width='32' />
+				<div className='logo   justify-start'>
 					<h1 className={classNames('text-gray-50')}>ISYLab</h1>
 				</div>
 			</Link>
 		)
 	}
 	return (
-		<div className={classNames('header flex flex-1')}>
+		<div className={classNames('header flex-l flex justify-start')}>
 			<LogLink />
 			<Menu
 				theme={'dark'}

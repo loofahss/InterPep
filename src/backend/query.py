@@ -14,7 +14,7 @@ def connect():
     return pymysql.connect(host='localhost',
                         database='neuropenet',
                         user='root',
-                        passwd='password')
+                        passwd='your_password')
 
 
 @app.route("/")
@@ -81,7 +81,7 @@ def query_byprotein():
             'peptides': peptides
         }
         print("peptidesequence:")
-        print(peptides)
+        print(peptides[2  ])
     except Exception as e:
         result = {'error': f"Error querying protein information: {str(e)}"}
     finally:

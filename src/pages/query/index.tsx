@@ -86,6 +86,7 @@ const Search = () => {
 	// 调用后端接口查询蛋白质序列
 	const searchProteinSequence = async () => {
 		try {
+			console.log('entryName:', entryName)
 			const response = await axios.post(
 				'http://127.0.0.1:5000/query/proteinsequence',
 				{
@@ -157,29 +158,6 @@ const Search = () => {
 		}
 	}
 
-	// 调用后端接口查询蛋白质序列
-
-	// const search = () => {
-	// 	// console.log(entryName, neuropeptideName)
-	// 	const history: string = formatQuery(query, 'sql')
-	// 	const idx = histories!.findIndex(h => h === history)
-	// 	if (idx > -1) {
-	// 		histories!.splice(idx, 1)
-	// 	}
-	// 	const additionalCondition = [
-	// 		entryName ? `entry_name='${entryName}'` : '',
-	// 		neuropeptideName ? `neuropeptide_name='${neuropeptideName}'` : ''
-	// 	]
-	// 		.filter(Boolean)
-	// 		.join(' AND ')
-	// 	setHistories([history, ...histories!])
-	// 	setSql(
-	// 		`${history} ${additionalCondition ? `AND ${additionalCondition}` : ''}`
-	// 	)
-	// 	refetch()
-	// 	searchPdbData() // 查询PDB数据
-	// 	// searchProteinSequence()  // 查询后端的蛋白质序列
-	// }
 	const search = () => {
 		console.log('enrtyName:', entryName)
 		console.log('neuropeptideName:', neuropeptideName)
@@ -368,13 +346,13 @@ const Search = () => {
 					)}
 				</div>
 			</div>
-			<Table
+			{/* <Table
 				loading={isLoading}
 				columns={columns}
 				dataSource={data}
 				rowKey={item => item.id}
 				className='mt-[20px]'
-			/>
+			/> */}
 		</div>
 	)
 }

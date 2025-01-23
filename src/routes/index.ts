@@ -24,28 +24,21 @@ const preDefinedRoutes: MenuRoute[] = [
 	{
 		path: '/',
 		key: 'home',
-		locale: 'menu.home',
+		locale: 'server',
 		component: Home,
 		icon: HomeOutlined
 	},
 	{
 		path: '/search',
 		key: 'search',
-		locale: 'menu.search',
+		locale: 'search',
 		icon: SearchOutlined,
-		// routes: [
-		// 	{
-		// 		path: '/search/query',
-		// 		key: 'query',
-		// 		component: Query
-		// 	}
-		// ]
 		component: Query
 	},
 	{
 		path: '/result?id=T10000001',
 		key: 'example',
-		locale: 'menu.example',
+		locale: 'example',
 		hideInMenu: true,
 		component: Result,
 		icon: BulbOutlined
@@ -53,7 +46,7 @@ const preDefinedRoutes: MenuRoute[] = [
 	{
 		path: '/help',
 		key: 'help',
-		locale: 'menu.help',
+		locale: 'help',
 		component: Help,
 		icon: QuestionCircleOutlined
 	},

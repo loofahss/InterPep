@@ -119,20 +119,6 @@ const ResultPage = () => {
 			)
 		}
 	]
-
-	// const PeptideList: React.FC = () => {
-	// 	return (
-	// 		<div>
-	// 			<Table
-	// 				columns={columns}
-	// 				dataSource={descriptionpeptides}
-	// 				rowKey={item => item.peptideid}
-	// 				className='mt-[20px]'
-	// 			/>
-	// 		</div>
-	// 	)
-	// }
-
 	return (
 		<div className='result-page py-[20px]'>
 			<div className='content'>
@@ -154,12 +140,6 @@ const ResultPage = () => {
 						Basic information&nbsp;
 						<Icon component={InformationSvg}></Icon>
 					</p>
-					{/* <Descriptions
-						column={1}
-						className='bg-white'
-						bordered
-						items={descriptionItems}
-					/> */}
 					<Divider className='my-[12px]' />
 					<p>
 						Structure&nbsp;
