@@ -197,11 +197,11 @@ const Search = () => {
 		<div className='query-page py-[20px]'>
 			<div className='header-wrapper flex'>
 				<div className='left flex-1'>
-					<Typography.Title level={4} className='mt-0'>
+					{/* <Typography.Title level={4} className='mt-0'>
 						Advance Search
 					</Typography.Title>
-					<Divider />
-					<p>
+					<Divider /> */}
+					<h2>
 						Search examples:
 						{cases.map((c, i) => (
 							<Fragment key={i}>
@@ -224,12 +224,12 @@ const Search = () => {
 										}
 									}}
 								>
-									#{i + 1}
+									case{i + 1}
 								</Button>
-								{i !== cases.length - 1 && <span>, </span>}
+								{i !== cases.length - 1 && <span> </span>}
 							</Fragment>
 						))}
-					</p>
+					</h2>
 
 					{/* 查询搜索框 */}
 					{/* Entry name输入框 */}
@@ -300,8 +300,8 @@ const Search = () => {
                         </div>
                     )} */}
 				</div>
-				<div className='right ml-[5px] w-[400px] border-red-800'>
-					<Typography.Title level={5} className='mt-0'>
+				{/* <div className='right ml-[5px] w-[400px] border-red-800'> */}
+				{/* <Typography.Title level={5} className='mt-0'>
 						Search History
 						<Button
 							type='text'
@@ -311,8 +311,8 @@ const Search = () => {
 							<CloseOutlined />
 							clear
 						</Button>
-					</Typography.Title>
-					{histories?.length ? (
+					</Typography.Title> */}
+				{/* {histories?.length ? (
 						<Space size={[0, 'small']} className='mt-[10px]' wrap>
 							{histories?.map((v, i) => {
 								return (
@@ -342,8 +342,8 @@ const Search = () => {
 						</Space>
 					) : (
 						<Empty className='mt-[20px]' />
-					)}
-				</div>
+					)} */}
+				{/* </div> */}
 			</div>
 			{/* <Table
 				loading={isLoading}
