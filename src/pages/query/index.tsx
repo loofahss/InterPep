@@ -186,7 +186,6 @@ const Search = () => {
 			searchPdbData() // 当 entryName 和 neuropeptideName 都不为空时调用 searchPdbData()
 		}
 	}
-
 	const cases = [case1, case2, case3]
 	const handleHistoryClick = (v: string) => {
 		setQuery(parseSQL(v))
