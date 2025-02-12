@@ -13,16 +13,17 @@
 	"files.exclude": {
 		"**/.stylelintcache": true,
 		"**/.eslintcache": true,
-		"**/.gitignore": true,
+		"**/.gitignore": false,
 		"**/.nyc_output": true,
 		"**/.vscode": true,
 		"**/dist": true,
 		"**/node_modules": true,
 		"**/yarn.lock": true,
-		"**/coverage": true
+		"**/coverage": true,
+		"**/.git": false
 	},
 	"files.watcherExclude": {
-		"**/dist": true
+		"**/dist": false
 	},
 	"git.enableCommitSigning": true,
 	"javascript.format.enable": false,

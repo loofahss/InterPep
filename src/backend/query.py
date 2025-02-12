@@ -141,7 +141,7 @@ def query_pdbdata_info(connection,proteinid,peptideid):
         print(proteinid, peptideid)
         cursor.execute(sql, (proteinid, peptideid))
         result['pdbData'] = cursor.fetchone()
- 
+
         
     except Exception as e:
         result['error'] = f"Error querying pdbdata information: {str(e)}"
