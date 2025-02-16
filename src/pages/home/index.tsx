@@ -13,7 +13,7 @@ const Home = () => {
 	return (
 		<div className='container'>
 			<div className='headline'>
-				<h1>Background</h1>
+				<h2>What We Offer?</h2>
 			</div>
 			<div className='body-con'>
 				The development of this website offers a valuable resource for
@@ -29,12 +29,12 @@ const Home = () => {
 				Here you can see some examples...
 				<div className='arrows'>
 					<span>&#9660;</span>
-					<span>&#9660;</span>
-					<span>&#9660;</span>
+					{/* <span>&#9660;</span> */}
+					{/* <span>&#9660;</span> */}
 				</div>
 			</button>
 			<div className='headline'>
-				<h1>Examples</h1>
+				<h2>Take a look at some examples</h2>
 			</div>
 			<div className='image-container'>
 				<img

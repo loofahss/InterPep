@@ -31,7 +31,7 @@ const ResultPage = () => {
 	// const [pdbdata, setPdbdata] = useState(initialPdbData)
 	const [pdbdata, setpdbdata] = useState<TableData | null>(initialpdbdata)
 
-	// console.log('resultpage_pdbdata', pdbdata)
+	console.log('resultpage_pdbdata', pdbdata)
 	const peptides = location.state?.peptidedata
 	// console.log('resultpage_peptides', peptides)
 	const query = getQuery()
@@ -122,24 +122,28 @@ const ResultPage = () => {
 	return (
 		<div className='result-page py-[20px]'>
 			<div className='content'>
-				<div>
+				{/* <div>
 					<Table
 						columns={columns}
 						dataSource={peptides}
 						rowKey={item => item.id}
 						className='mt-[20px]'
 					/>
-				</div>
+				</div> */}
+				{peptides && peptides.length > 0 && (
+					<Table
+						columns={columns}
+						dataSource={peptides}
+						rowKey={item => item.id}
+						className='mt-[20px]'
+					/>
+				)}
+
 				<Typography.Title level={5} className='header'>
 					3D Structure
 				</Typography.Title>
 				<div className='content-wrapper'>
-					<p className='m-0 text-lg font-bold'>{query.id}</p>
-					<Divider className='my-[12px]' />
-					<p>
-						Basic information&nbsp;
-						<Icon component={InformationSvg}></Icon>
-					</p>
+					{pdbdata?.neuropeptide && <p>pEI {pdbdata.length}</p>}
 					<Divider className='my-[12px]' />
 					<p>
 						Structure&nbsp;
