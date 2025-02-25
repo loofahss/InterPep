@@ -88,7 +88,7 @@ const Search = () => {
 		try {
 			console.log('entryName:', entryName)
 			const response = await axios.post(
-				'http://127.0.0.1:5000/query/proteinsequence',
+				'http://119.96.190.130:6999/query/proteinsequence',
 				{
 					protein_id: entryName // 使用 entryName 作为 protein_id
 				}
@@ -126,10 +126,13 @@ const Search = () => {
 
 	const searchPdbData = async () => {
 		try {
-			const response = await axios.post('http://127.0.0.1:5000/query/pdbdata', {
-				proteinid: entryName,
-				peptideid: neuropeptideName
-			})
+			const response = await axios.post(
+				'http://119.96.190.130:6999/query/pdbdata',
+				{
+					proteinid: entryName,
+					peptideid: neuropeptideName
+				}
+			)
 			console.log('response:', response)
 			const pdbDataArray = response.data.pdbdata.pdbData
 			const pei = response.data.pdbdata.PEI
