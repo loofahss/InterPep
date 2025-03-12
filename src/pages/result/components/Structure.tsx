@@ -37,11 +37,33 @@ export default function Structure({
 	const setting: any = {
 		stick: { colorscheme: 'orangeCarbon', hidden: true },
 		sphere: { colorscheme: 'white', hidden: true },
-		cartoon: { color: 'spectrum', hidden: true }
+		cartoon: { color: 'spectrum', hidden: true },
+		surface: { opacity: 0.7, color: 'white', hidden: true }
 	}
 	const handleStyleChange = (e: any) => {
 		setStyle(e.target.value)
 		if (e.target.value !== 'complex') {
+			if (e.target.value === 'surface') {
+				viewer.current.addSurface(
+					'surface',
+					{
+						type: 'VDW', // 表面类型：VDW（范德华表面）、SAS（溶剂可及表面）、MS（分子表面）
+						opacity: 0.7, // 透明度（0-1）
+						color: 'spectrum' // 颜色或颜色映射函数
+					},
+					{ chain: 'A' }
+				)
+				viewer.current.addSurface(
+					'surface',
+					{
+						type: 'VDW', // 表面类型：VDW（范德华表面）、SAS（溶剂可及表面）、MS（分子表面）
+						opacity: 0.7, // 透明度（0-1）
+						color: 'red' // 颜色或颜色映射函数
+					},
+					{ chain: 'B' }
+				)
+			}
+
 			setting[e.target.value].hidden = false
 			viewer.current.setStyle({ resi: '1-9999999' }, setting)
 		} else {
@@ -58,10 +80,10 @@ export default function Structure({
 	}
 
 	return (
-		<div className='flex h-[600px] bg-white'>
+		<div className='flex h-[70vh]   w-[80vw] flex-col bg-white md:h-[90vh] md:w-[80vw] md:flex-row '>
 			<div ref={molRef} className='relative flex-1' />
-			<div className='flex w-[200px] flex-col justify-between py-[20px]'>
-				<div className='top'>
+			<div className='flex w-[200px] flex-col justify-between py-[20px] '>
+				<div className='top md:order-1'>
 					<p>Change style</p>
 					<Radio.Group onChange={handleStyleChange} value={style}>
 						<Space direction='vertical'>
@@ -69,10 +91,11 @@ export default function Structure({
 							<Radio value='cartoon'>cartoon</Radio>
 							<Radio value='stick'>stick</Radio>
 							<Radio value='sphere'>sphere</Radio>
+							<Radio value='surface'>surface</Radio>
 						</Space>
 					</Radio.Group>
 				</div>
-				<div className='bottom'>
+				<div className='bottom md:order-2'>
 					<Button
 						type='link'
 						onClick={() => {

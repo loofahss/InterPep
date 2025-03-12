@@ -85,54 +85,88 @@ const Search = () => {
 
 	// 调用后端接口查询蛋白质序列
 	const searchProteinSequence = async () => {
-		try {
-			console.log('entryName:', entryName)
-			const response = await axios.post(
-				'http://119.96.190.130:6999/query/proteinsequence',
-				{
-					protein_id: entryName // 使用 entryName 作为 protein_id
-				}
-			)
-			// const peptides: Peptide[] = response.data.peptides.map(
-			// 	(peptide: any) => ({
-			// 		id: peptide.id,
-			// 		sequence: peptide.sequence
-			// 	})
-			// )
-			console.log('response:', response)
-			const peptides: Peptide[] = (response.data.peptides || []).map(
-				(peptide: any) => ({
-					id: peptide.peptideid,
-					sequence: peptide.peptideSequence,
-					pei: peptide.PEI,
-					pdb: peptide.pdb
-				})
-			)
+		console.log('searchclick', entryName, neuropeptideName)
+		console.log('type_entryName:', Object.prototype.toString.call(entryName))
+		if (entryName) {
+			try {
+				console.log('entryName:', entryName)
+				const response = await axios.post(
+					'http://127.0.0.1:5000/query/proteinsequence',
+					{
+						protein_id: entryName // 使用 entryName 作为 protein_id
+					}
+				)
+				// const peptides: Peptide[] = response.data.peptides.map(
+				// 	(peptide: any) => ({
+				// 		id: peptide.id,
+				// 		sequence: peptide.sequence
+				// 	})
+				// )
+				console.log('response:', response)
+				const peptides: Peptide[] = (response.data.peptides || []).map(
+					(peptide: any) => ({
+						id: peptide.peptideid,
+						sequence: peptide.peptideSequence,
+						pei: peptide.PEI,
+						pdb: peptide.pdb
+					})
+				)
 
-			console.log('peptides0:', peptides[0])
+				console.log('peptides0:', peptides[0])
 
-			const proteinSequence = response.data.proteinsequence
-			console.log('proteinSequence:', proteinSequence)
+				const proteinSequence = response.data.proteinsequence
+				console.log('proteinSequence:', proteinSequence)
 
-			setProteinSequence(response.data.proteinsequence)
-			setPeptides(peptides)
-			navigate('/result', { state: { peptidedata: peptides } })
-			message.success('Protein sequence retrieved successfully!')
-		} catch (error) {
-			message.error('Error fetching protein sequence')
-			console.error('Error:', error)
+				setProteinSequence(response.data.proteinsequence)
+				setPeptides(peptides)
+				navigate('/result', { state: { peptidedata: peptides } })
+				message.success('Protein sequence retrieved successfully!')
+			} catch (error) {
+				message.error('Error fetching protein sequence')
+				console.error('Error:', error)
+			}
+		}
+		if (neuropeptideName) {
+			try {
+				console.log('neuropeptideName:', neuropeptideName)
+				const response = await axios.post(
+					'http://127.0.0.1:5000/query/peptidesequence',
+					{
+						protein_id: neuropeptideName // 使用 entryName 作为 protein_id
+					}
+				)
+				console.log('response:', response)
+				const peptides: Peptide[] = (response.data.peptides || []).map(
+					(peptide: any) => ({
+						id: peptide.peptideid,
+						sequence: peptide.peptideSequence,
+						pei: peptide.PEI,
+						pdb: peptide.pdb
+					})
+				)
+
+				console.log('peptides0:', peptides[0])
+
+				const proteinSequence = response.data.proteinsequence
+				console.log('proteinSequence:', proteinSequence)
+
+				setProteinSequence(response.data.proteinsequence)
+				setPeptides(peptides)
+				navigate('/result', { state: { peptidedata: peptides } })
+				message.success('Protein sequence retrieved successfully!')
+			} catch (error) {
+				message.error('Error fetching protein sequence')
+				console.error('Error:', error)
+			}
 		}
 	}
 
 	const searchPdbData = async () => {
 		try {
-			const response = await axios.post(
-				'http://119.96.190.130:6999/query/pdbdata',
-				{
-					proteinid: entryName,
-					peptideid: neuropeptideName
-				}
-			)
+			const response = await axios.post('http://127.0.0.1:5000/query/pdbdata', {
+				proteinid: entryName,
+				peptideid: neuropeptideName
+			})
 			console.log('response:', response)
 			const pdbDataArray = response.data.pdbdata.pdbData
 			const pei = response.data.pdbdata.PEI
@@ -147,7 +181,7 @@ const Search = () => {
 				id: entryName, // 根据实际情况填充
 				sequence: proteinSequence || '', // 根据实际情况填充
 				length: pei || 0,
-				neuropeptide: pdbString
+				neuropeptide: pdbString[0]
 			}
 			setPdbData(tableData) // 保存为TableData格式
 			console.log('PDB Data:', tableData)
@@ -186,6 +220,9 @@ const Search = () => {
 		if (!neuropeptideName) {
 			console.log('searchProteinSequence')
 			searchProteinSequence() // 当 entryName 为空时调用 searchProteinSequence()
+		} else if (!entryName) {
+			console.log('searchProteinSequence')
+			searchProteinSequence() // 当 neuropeptideName 为空时调用 searchProteinSequence()
 		} else if (entryName && neuropeptideName) {
 			console.log('searchPdbData')
 			searchPdbData() // 当 entryName 和 neuropeptideName 都不为空时调用 searchPdbData()

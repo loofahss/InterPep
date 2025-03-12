@@ -41,6 +41,11 @@ const ResultPage = () => {
 		return data || undefined
 	}, [query])
 	const handleViewStructure = (pdb: string) => {
+		window.scrollBy({
+			// top: -window.innerHeight * 0.4,
+			top: window.innerHeight * 1.1,
+			behavior: 'smooth'
+		})
 		const tableData: TableData = {
 			id: peptides, // 根据实际情况填充
 			sequence: 'proteinSequence' || '', // 根据实际情况填充
@@ -82,7 +87,9 @@ const ResultPage = () => {
 		{
 			title: 'Sequence',
 			dataIndex: 'sequence',
-			key: 'sequence'
+			key: 'sequence',
+			width: 400,
+			ellipsis: true
 		},
 		{
 			title: 'PEI',

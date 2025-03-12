@@ -81,22 +81,24 @@ export default function MenuView() {
 	function LogLink() {
 		return (
 			<Link to={{ pathname: '/' }}>
-				<div className='logo   justify-start'>
+				<div className='logo justify-start'>
 					<h1 className={classNames('text-gray-50')}>ISYLab</h1>
 				</div>
 			</Link>
 		)
 	}
 	return (
-		<div className={classNames('header flex-l flex justify-start')}>
+		<div className='header flex justify-start'>
 			<LogLink />
 			<Menu
 				theme={'dark'}
 				mode='horizontal'
 				onClick={handleClick}
-				selectedKeys={[current]}
+				// selectedKeys={[current]}
+				selectedKeys={current ? [current] : []}
 				items={formatMenus}
-				className={classNames('flex-1 bg-blue-600')}
+				className='bg-blue-600'
+				style={{ minWidth: '600px' }}
 			></Menu>
 		</div>
 	)
