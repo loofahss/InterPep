@@ -81,6 +81,7 @@ export default function Structure({
 
 	return (
 		<div className='flex h-[70vh]   w-[80vw] flex-col bg-white md:h-[90vh] md:w-[80vw] md:flex-row '>
+			{data?.id && <p>{data.id}</p>}
 			<div ref={molRef} className='relative flex-1' />
 			<div className='flex w-[200px] flex-col justify-between py-[20px] '>
 				<div className='top md:order-1'>

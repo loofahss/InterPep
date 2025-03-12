@@ -1,17 +1,6 @@
-import { CloseOutlined } from '@ant-design/icons'
 import { useQuery } from '@tanstack/react-query'
 import { useLocalStorageState } from 'ahooks'
-import {
-	Button,
-	Divider,
-	Empty,
-	Input,
-	Space,
-	Table,
-	Tag,
-	Typography,
-	message
-} from 'antd'
+import { Button, Input, Typography, message } from 'antd'
 import session from 'api/sys/session'
 import { TableData } from 'app_models/search'
 import axios from 'axios' // 引入 axios
@@ -22,7 +11,7 @@ import { parseSQL } from 'react-querybuilder/parseSQL'
 import { useNavigate } from 'react-router-dom'
 import { case1, case2, case3, defaultCase } from './fields'
 import './index.less'
-const { Text, Link } = Typography
+const { Link } = Typography
 import type { Peptide, peptidedata } from '../result'
 const Search = () => {
 	const navigate = useNavigate()
@@ -36,44 +25,45 @@ const Search = () => {
 	const [neuropeptideName, setNeuropeptideName] = useState<string>('') // Neuropeptide name状态
 	const [proteinSequence, setProteinSequence] = useState<string>('') // 保存返回的蛋白质序列
 	const [pdbData, setPdbData] = useState<TableData | null>(null)
+
 	const [peptidedata, setPeptides] = useState<peptidedata[] | null>(null)
-	const columns = [
-		{
-			title: 'ID',
-			dataIndex: 'id'
-		},
-		{
-			title: 'Sequence',
-			dataIndex: 'sequence'
-		},
-		{
-			title: 'Length',
-			dataIndex: 'length'
-		},
-		{
-			title: 'Neuropeptide name',
-			dataIndex: 'receptor',
-			render: (v: string[], item: TableData) => {
-				const prefix =
-					import.meta.env.VITE_APP_BASENAME === '/'
-						? ''
-						: import.meta.env.VITE_APP_BASENAME
-				const url = new URL(
-					`${prefix}/result?id=${item.id}_`,
-					window.location.origin
-				)
-				return (
-					<>
-						{v.map((r, i) => (
-							<Link key={i} href={url + r} target='_blank' className='block'>
-								{r}
-							</Link>
-						))}
-					</>
-				)
-			}
-		}
-	]
+	// const columns = [
+	// 	{
+	// 		title: 'ID',
+	// 		dataIndex: 'id'
+	// 	},
+	// 	{
+	// 		title: 'Sequence',
+	// 		dataIndex: 'sequence'
+	// 	},
+	// 	{
+	// 		title: 'Length',
+	// 		dataIndex: 'length'
+	// 	},
+	// 	{
+	// 		title: 'Neuropeptide name',
+	// 		dataIndex: 'receptor',
+	// 		render: (v: string[], item: TableData) => {
+	// 			const prefix =
+	// 				import.meta.env.VITE_APP_BASENAME === '/'
+	// 					? ''
+	// 					: import.meta.env.VITE_APP_BASENAME
+	// 			const url = new URL(
+	// 				`${prefix}/result?id=${item.id}_`,
+	// 				window.location.origin
+	// 			)
+	// 			return (
+	// 				<>
+	// 					{v.map((r, i) => (
+	// 						<Link key={i} href={url + r} target='_blank' className='block'>
+	// 							{r}
+	// 						</Link>
+	// 					))}
+	// 				</>
+	// 			)
+	// 		}
+	// 	}
+	// ]
 	const { isLoading, data, refetch } = useQuery({
 		queryKey: ['search', sql],
 		queryFn: async () => {
@@ -90,12 +80,9 @@ const Search = () => {
 		if (entryName) {
 			try {
 				console.log('entryName:', entryName)
-				const response = await axios.post(
-					'http://127.0.0.1:5000/query/proteinsequence',
-					{
-						protein_id: entryName // 使用 entryName 作为 protein_id
-					}
-				)
+				const response = await axios.post('/query/proteinsequence', {
+					protein_id: entryName // 使用 entryName 作为 protein_id
+				})
 				// const peptides: Peptide[] = response.data.peptides.map(
 				// 	(peptide: any) => ({
 				// 		id: peptide.id,
@@ -129,12 +116,9 @@ const Search = () => {
 		if (neuropeptideName) {
 			try {
 				console.log('neuropeptideName:', neuropeptideName)
-				const response = await axios.post(
-					'http://127.0.0.1:5000/query/peptidesequence',
-					{
-						protein_id: neuropeptideName // 使用 entryName 作为 protein_id
-					}
-				)
+				const response = await axios.post('/query/peptidesequence', {
+					protein_id: neuropeptideName // 使用 entryName 作为 protein_id
+				})
 				console.log('response:', response)
 				const peptides: Peptide[] = (response.data.peptides || []).map(
 					(peptide: any) => ({
@@ -163,7 +147,7 @@ const Search = () => {
 
 	const searchPdbData = async () => {
 		try {
-			const response = await axios.post('http://127.0.0.1:5000/query/pdbdata', {
+			const response = await axios.post('/query/pdbdata', {
 				proteinid: entryName,
 				peptideid: neuropeptideName
 			})

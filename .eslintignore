@@ -9,3 +9,5 @@ react-app-env.d.ts
 !.eslintrc.js
 echarts-dark-theme.*
 /public
+node_modules/
+dist/

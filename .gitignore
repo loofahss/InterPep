@@ -10,3 +10,4 @@ coverage
 cypress/videos
 .git
 src/backend
+.env

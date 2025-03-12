@@ -62,7 +62,7 @@ export default defineConfig(({ mode }) => {
 		server: {
 			proxy: {
 				// 代理配置
-				'/api': {
+				'/query': {
 					target: 'http://127.0.0.1:5000', // 后端服务实际地址
 					changeOrigin: true // 必须设置为true
 				}
