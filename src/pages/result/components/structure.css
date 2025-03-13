@@ -1,0 +1,4 @@
+.info-item {
+	display: block; /* 默认就是 block，显式声明更安全 */
+	margin-bottom: 8px; /* 增加行间距 */
+}

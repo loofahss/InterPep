@@ -153,18 +153,18 @@ const Search = () => {
 			})
 			console.log('response:', response)
 			const pdbDataArray = response.data.pdbdata.pdbData
-			const pei = response.data.pdbdata.PEI
+			// const pei = response.data.pdbdata.PEI
 			console.log('pdbDataArray:', pdbDataArray)
 
 			// 假设 pdbDataArray 是一个包含字符串的数组
 			const pdbString = pdbDataArray
 			// const pdbString = response.data.pdbdata
-			console.log('pdbString:', pdbString)
+			// console.log('pdbString:', pdbString)
 			// 构造符合TableData格式的数据
 			const tableData: TableData = {
 				id: entryName, // 根据实际情况填充
 				sequence: proteinSequence || '', // 根据实际情况填充
-				length: pei || 0,
+				length: pdbString[1] || 0,
 				neuropeptide: pdbString[0]
 			}
 			setPdbData(tableData) // 保存为TableData格式

@@ -40,7 +40,7 @@ const ResultPage = () => {
 		const data: any = await session.search({ id: query.id })
 		return data || undefined
 	}, [query])
-	const handleViewStructure = (pdb: string, id: string) => {
+	const handleViewStructure = (pdb: string, id: string, pei: number) => {
 		window.scrollBy({
 			// top: -window.innerHeight * 0.4,
 			top: window.innerHeight * 1.1,
@@ -49,7 +49,7 @@ const ResultPage = () => {
 		const tableData: TableData = {
 			id: id, // 根据实际情况填充
 			sequence: 'proteinSequence' || '', // 根据实际情况填充
-			length: 10 || 0,
+			length: pei,
 			neuropeptide: pdb
 		}
 		console.log('pdb:', tableData)
@@ -119,8 +119,10 @@ const ResultPage = () => {
 			title: '3D Structure',
 			key: 'pdb',
 			dataIndex: 'pdb',
-			render: (text: any, record: { pdb: string; id: string }) => (
-				<Button onClick={() => handleViewStructure(record.pdb, record.id)}>
+			render: (text: any, record: { pdb: string; id: string; pei: number }) => (
+				<Button
+					onClick={() => handleViewStructure(record.pdb, record.id, record.pei)}
+				>
 					View 3D Structure
 				</Button>
 			)
