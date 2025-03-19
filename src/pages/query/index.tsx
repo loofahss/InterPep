@@ -241,12 +241,12 @@ const Search = () => {
 											setNeuropeptideName('NLP-13-5')
 										} else if (i === 1) {
 											// Case 2
-											setEntryName('PDFR-1-1_CAEEL')
-											setNeuropeptideName('NLP-37-1')
+											setEntryName('Q17478_CAEEL')
+											setNeuropeptideName('')
 										} else if (i === 2) {
 											// Case 3
-											setEntryName('G5EGH5_CAEEL')
-											setNeuropeptideName('FLP-14-1')
+											setEntryName('')
+											setNeuropeptideName('NLP-13-5')
 										}
 									}}
 								>
