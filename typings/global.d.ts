@@ -1,9 +1,8 @@
-/// <reference types="node" />
-/// <reference types="react" />
-/// <reference types="react-dom" />
-/// <reference types="vite/client" />
-/// <reference types="vite-plugin-svgr/client" />
-
+import 'node'
+import 'react'
+import 'react-dom'
+import 'vite/client'
+import 'vite-plugin-svgr/client'
 interface ImportMetaEnv {
 	readonly VITE_APP_BASENAME: string
 	// 更多环境变量...

@@ -12,9 +12,9 @@ body {
 }
 
 .container {
-	background-color: #ffffff;
+	background-color: #fff;
 	border-radius: 12px;
-	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+	box-shadow: 0 4px 12px rgb(0 0 0 / 10%);
 	padding: 20px;
 	max-width: 600px;
 	width: 100%;
@@ -23,7 +23,7 @@ body {
 .title {
 	font-size: 24px;
 	font-weight: 600;
-	color: #333333;
+	color: #333;
 	margin-bottom: 20px;
 	text-align: center;
 }
