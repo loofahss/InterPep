@@ -60,7 +60,6 @@ axios.interceptors.response.use(
 			)
 			history.push('/login')
 		}
-		await message.error(data.msg)
 		throw data
 	},
 	async error => {

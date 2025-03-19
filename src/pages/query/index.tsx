@@ -27,43 +27,7 @@ const Search = () => {
 	const [pdbData, setPdbData] = useState<TableData | null>(null)
 
 	const [peptidedata, setPeptides] = useState<peptidedata[] | null>(null)
-	// const columns = [
-	// 	{
-	// 		title: 'ID',
-	// 		dataIndex: 'id'
-	// 	},
-	// 	{
-	// 		title: 'Sequence',
-	// 		dataIndex: 'sequence'
-	// 	},
-	// 	{
-	// 		title: 'Length',
-	// 		dataIndex: 'length'
-	// 	},
-	// 	{
-	// 		title: 'Neuropeptide name',
-	// 		dataIndex: 'receptor',
-	// 		render: (v: string[], item: TableData) => {
-	// 			const prefix =
-	// 				import.meta.env.VITE_APP_BASENAME === '/'
-	// 					? ''
-	// 					: import.meta.env.VITE_APP_BASENAME
-	// 			const url = new URL(
-	// 				`${prefix}/result?id=${item.id}_`,
-	// 				window.location.origin
-	// 			)
-	// 			return (
-	// 				<>
-	// 					{v.map((r, i) => (
-	// 						<Link key={i} href={url + r} target='_blank' className='block'>
-	// 							{r}
-	// 						</Link>
-	// 					))}
-	// 				</>
-	// 			)
-	// 		}
-	// 	}
-	// ]
+
 	const { isLoading, data, refetch } = useQuery({
 		queryKey: ['search', sql],
 		queryFn: async () => {
@@ -83,12 +47,6 @@ const Search = () => {
 				const response = await axios.post('/query/proteinsequence', {
 					protein_id: entryName // 使用 entryName 作为 protein_id
 				})
-				// const peptides: Peptide[] = response.data.peptides.map(
-				// 	(peptide: any) => ({
-				// 		id: peptide.id,
-				// 		sequence: peptide.sequence
-				// 	})
-				// )
 				console.log('response:', response)
 				const peptides: Peptide[] = (response.data.peptides || []).map(
 					(peptide: any) => ({
@@ -155,19 +113,14 @@ const Search = () => {
 			const pdbDataArray = response.data.pdbdata.pdbData
 			// const pei = response.data.pdbdata.PEI
 			console.log('pdbDataArray:', pdbDataArray)
-
-			// 假设 pdbDataArray 是一个包含字符串的数组
 			const pdbString = pdbDataArray
-			// const pdbString = response.data.pdbdata
-			// console.log('pdbString:', pdbString)
-			// 构造符合TableData格式的数据
 			const tableData: TableData = {
-				id: entryName, // 根据实际情况填充
-				sequence: proteinSequence || '', // 根据实际情况填充
+				id: entryName,
+				sequence: proteinSequence || '',
 				length: pdbString[1] || 0,
 				neuropeptide: pdbString[0]
 			}
-			setPdbData(tableData) // 保存为TableData格式
+			setPdbData(tableData)
 			console.log('PDB Data:', tableData)
 			if (tableData.id) {
 				navigate('/result', { state: { tableData } })
@@ -203,13 +156,13 @@ const Search = () => {
 
 		if (!neuropeptideName) {
 			console.log('searchProteinSequence')
-			searchProteinSequence() // 当 entryName 为空时调用 searchProteinSequence()
+			searchProteinSequence()
 		} else if (!entryName) {
 			console.log('searchProteinSequence')
-			searchProteinSequence() // 当 neuropeptideName 为空时调用 searchProteinSequence()
+			searchProteinSequence()
 		} else if (entryName && neuropeptideName) {
 			console.log('searchPdbData')
-			searchPdbData() // 当 entryName 和 neuropeptideName 都不为空时调用 searchPdbData()
+			searchPdbData()
 		}
 	}
 	const cases = [case1, case2, case3]
@@ -223,10 +176,6 @@ const Search = () => {
 		<div className='query-page py-[20px]'>
 			<div className='header-wrapper flex'>
 				<div className='left flex-1'>
-					{/* <Typography.Title level={4} className='mt-0'>
-						Advance Search
-					</Typography.Title>
-					<Divider /> */}
 					<h2>
 						Search examples:
 						{cases.map((c, i) => (
@@ -279,16 +228,6 @@ const Search = () => {
 						/>
 					</div>
 
-					{/* <p>
-						{sql && (
-							<>
-								Current SQL:&nbsp;
-								<Text code className='text-red-700'>
-									{sql}
-								</Text>
-							</>
-						)}
-					</p> */}
 					<div>
 						<Button
 							type='primary'
@@ -297,12 +236,6 @@ const Search = () => {
 							// onClick={search}
 							onClick={() => {
 								search()
-								// setPdbData({
-								// 	id: 'example',
-								// 	sequence: 'example sequence',
-								// 	length: 123,
-								// 	neuropeptide: 'example neuropeptide'
-								// })
 							}}
 						>
 							Submit
@@ -318,66 +251,8 @@ const Search = () => {
 							Reset
 						</Button>
 					</div>
-					{/* 显示蛋白质序列 */}
-					{/* {proteinSequence && (
-                        <div style={{ marginTop: 20 }}>
-                            <Typography.Text strong>Protein Sequence:</Typography.Text>
-                            <p>{proteinSequence}</p>
-                        </div>
-                    )} */}
 				</div>
-				{/* <div className='right ml-[5px] w-[400px] border-red-800'> */}
-				{/* <Typography.Title level={5} className='mt-0'>
-						Search History
-						<Button
-							type='text'
-							className='float-right'
-							onClick={() => setHistories([])}
-						>
-							<CloseOutlined />
-							clear
-						</Button>
-					</Typography.Title> */}
-				{/* {histories?.length ? (
-						<Space size={[0, 'small']} className='mt-[10px]' wrap>
-							{histories?.map((v, i) => {
-								return (
-									<Tag
-										bordered={false}
-										key={i}
-										closable
-										className='cursor-pointer'
-										onClose={() => {
-											setHistories(histories.filter((_, index) => index !== i))
-										}}
-										onClick={handleHistoryClick.bind(null, v)}
-									>
-										<Typography.Text
-											style={{ maxWidth: 350 }}
-											ellipsis={{
-												tooltip: {
-													title: v
-												}
-											}}
-										>
-											{v}
-										</Typography.Text>
-									</Tag>
-								)
-							})}
-						</Space>
-					) : (
-						<Empty className='mt-[20px]' />
-					)} */}
-				{/* </div> */}
 			</div>
-			{/* <Table
-				loading={isLoading}
-				columns={columns}
-				dataSource={data}
-				rowKey={item => item.id}
-				className='mt-[20px]'
-			/> */}
 		</div>
 	)
 }

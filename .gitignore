@@ -7,7 +7,9 @@ dist-ssr
 coverage
 .nyc_output
 .stylelintcache
-cypress/videos
+cypress
 .git
 src/backend
 .env
+/tests
+.husky
