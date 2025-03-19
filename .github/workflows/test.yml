@@ -21,10 +21,10 @@ jobs:
       #   with:
       #     version: latest
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'pnpm'
+      # - uses: actions/setup-node@v4
+      #   with:
+      #     node-version: '20'
+      #     cache: 'pnpm'
 
       - name: Setup PNPM
         run: |
