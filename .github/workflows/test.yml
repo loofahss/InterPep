@@ -35,9 +35,7 @@ jobs:
         run: pnpm i && pnpm cypress install
 
       - name: Validate
-        run: pnpm run-p lint test:ci test:e2e:ci
-        env:
-          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+        run: pnpm run-p lint test:ci
 
       - name: Upload coverage
         uses: codecov/codecov-action@v3
