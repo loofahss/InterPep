@@ -65,9 +65,9 @@ const Search = () => {
 				setProteinSequence(response.data.proteinsequence)
 				setPeptides(peptides)
 				navigate('/result', { state: { peptidedata: peptides } })
-				message.success('Protein sequence retrieved successfully!')
+				// message.success('Protein sequence retrieved successfully!')
 			} catch (error) {
-				message.error('Error fetching protein sequence')
+				message.error('Error fetching data')
 				console.error('Error:', error)
 			}
 		}
@@ -95,9 +95,9 @@ const Search = () => {
 				setProteinSequence(response.data.proteinsequence)
 				setPeptides(peptides)
 				navigate('/result', { state: { peptidedata: peptides } })
-				message.success('Protein sequence retrieved successfully!')
+				// message.success('Protein sequence retrieved successfully!')
 			} catch (error) {
-				message.error('Error fetching protein sequence')
+				message.error('Error fetching data')
 				console.error('Error:', error)
 			}
 		}
@@ -124,12 +124,12 @@ const Search = () => {
 			console.log('PDB Data:', tableData)
 			if (tableData.id) {
 				navigate('/result', { state: { tableData } })
-				message.success('PDB data retrieved successfully!')
+				// message.success('PDB data retrieved successfully!')
 			} else {
-				message.error('Error fetching PDB data')
+				message.error('Error fetching data')
 			}
 		} catch (error) {
-			message.error('Error fetching PDB data')
+			message.error('Error fetching data')
 			console.error('Error:', error)
 		}
 	}
