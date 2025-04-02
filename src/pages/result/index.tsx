@@ -37,8 +37,9 @@ const ResultPage = () => {
 	const peptides = location.state?.peptidedata
 	const query = getQuery()
 	const entry = useEntryStore.getState().entryName
-	// console.log('entry ' + entry)
+	console.log('entry ' + entry)
 	const neuropeptide = useNeuropepStore.getState().neuropeptideName
+	console.log('neuropeptidename滴滴滴' + neuropeptide)
 	const fetchScreenData = useCallback(async () => {
 		if (!query.id) return undefined
 		const data: any = await session.search({ id: query.id })
@@ -52,8 +53,8 @@ const ResultPage = () => {
 		console.log('id是' + id)
 		console.log('pdb是' + pdb)
 		const searchPdbData = async (before: string, after: string) => {
-			// console.log('before和after')
-			// console.log(before, after)
+			console.log('before和after')
+			console.log(before, after)
 			try {
 				const response = await axios.post('/query/pdbdata', {
 					proteinid: before,
@@ -75,10 +76,10 @@ const ResultPage = () => {
 			}
 		}
 		let pdbdatasearched
-		if (id.slice(-5) === 'CAELL') {
-			pdbdatasearched = await searchPdbData(entry, id)
-		} else {
+		if (id.slice(-5) === 'CAEEL') {
 			pdbdatasearched = await searchPdbData(id, neuropeptide)
+		} else {
+			pdbdatasearched = await searchPdbData(entry, id)
 		}
 		console.log('pdbdatasearched is' + pdbdatasearched)
 		const tableData: TableData = {
@@ -127,7 +128,7 @@ const ResultPage = () => {
 			ellipsis: true
 		},
 		{
-			title: 'PEI',
+			// title: 'PEI',
 			dataIndex: 'pei',
 			key: 'PEI',
 			filters: [
@@ -148,13 +149,6 @@ const ResultPage = () => {
 				}
 				return false
 			},
-			// sorter: (a: { pei: number }, b: { pei: number }) => b.pei - a.pei, // 添加排序功能
-			// onCell: (record: { pei: number }) => ({
-			// 	onMouseEnter: () => {
-			// 		console.log(`PEI: ${record.pei}`)
-			// 	},
-			// 	title: `PEI: ${record.pei}` // Tooltip text
-			// }),
 			title: (
 				<span className='pei-column'>
 					PEI <Icon component={InformationSvg}></Icon>
