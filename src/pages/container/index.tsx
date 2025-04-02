@@ -8,6 +8,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from 'store/redux-hooks'
 import { selectUserInfo } from 'store/slicers/userSlice'
 import styles from './container.module.less'
+import { RefType } from '../../../typings/global'
 
 const loginAuth = new Set(['/record'])
 const adminAuth = new Set(['/user'])

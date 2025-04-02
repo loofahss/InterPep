@@ -16,7 +16,30 @@ import promiseMiddleware from 'redux-promise'
 import appReducer from 'store/slicers/appSlice'
 import tabReducer from 'store/slicers/tabSlice'
 import userReducer from 'store/slicers/userSlice'
+import { s } from 'vitest/dist/reporters-O4LBziQ_'
+// store/useEntryStore.ts
+import { create } from 'zustand'
 
+type EntryStore = {
+	entryName: string
+	setEntryName: (name: string) => void
+}
+
+export const useEntryStore = create<EntryStore>((set, get) => ({
+	entryName: String(''),
+	setEntryName: name => set({ entryName: name }),
+	getEntryName: () => {
+		return get().entryName
+	}
+}))
+type NeuropepStore = {
+	neuropeptideName: string
+	setNeuropeptideName: (name: string) => void
+}
+export const useNeuropepStore = create<NeuropepStore>(set => ({
+	neuropeptideName: String(''),
+	setNeuropeptideName: name => set({ neuropeptideName: name })
+}))
 const reducers = combineReducers({
 	tab: tabReducer,
 	user: userReducer,

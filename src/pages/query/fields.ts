@@ -26,7 +26,7 @@ export const fields = (
 
 export const defaultCase: RuleGroupType = {
 	combinator: 'and',
-	not: false,
+	not: false, //规则是否反转
 	rules: [
 		{
 			field: 'Protein Entry Name',

@@ -4,51 +4,67 @@ import { Button, Input, Typography, message } from 'antd'
 import session from 'api/sys/session'
 import { TableData } from 'app_models/search'
 import axios from 'axios' // 引入 axios
-import { Fragment, useState } from 'react'
+import pako from 'pako'
+import { createContext, Fragment, useState } from 'react'
 import { RuleGroupType, formatQuery } from 'react-querybuilder'
 import 'react-querybuilder/dist/query-builder.scss'
 import { parseSQL } from 'react-querybuilder/parseSQL'
 import { useNavigate } from 'react-router-dom'
+import type { Peptide, peptidedata } from '../result'
 import { case1, case2, case3, defaultCase } from './fields'
 import './index.less'
+import { useEntryStore, useNeuropepStore } from 'store/index'
 const { Link } = Typography
-import type { Peptide, peptidedata } from '../result'
+// const EntryNameContext = createContext<{
+// 	entryName: string
+// 	setEntryName: (value: string) => void
+// }>({
+// 	entryName: '',
+// 	setEntryName: () => {}
+// })
 const Search = () => {
 	const navigate = useNavigate()
 	const [query, setQuery] = useState<RuleGroupType>(defaultCase)
-	const [sql, setSql] = useState<string>('')
-	const [histories, setHistories] = useLocalStorageState<string[]>(
-		'__histories__',
-		{ defaultValue: [] }
-	)
-	const [entryName, setEntryName] = useState<string>('') // Entry name状态
-	const [neuropeptideName, setNeuropeptideName] = useState<string>('') // Neuropeptide name状态
+
+	// const [entryName, setEntryName] = useState<string>('') // Entry name状态
+	const { entryName, setEntryName } = useEntryStore()
+	// const [neuropeptideName, setNeuropeptideName] = useState<string>('') // Neuropeptide name状态
+	const { neuropeptideName, setNeuropeptideName } = useNeuropepStore()
 	const [proteinSequence, setProteinSequence] = useState<string>('') // 保存返回的蛋白质序列
 	const [pdbData, setPdbData] = useState<TableData | null>(null)
 
 	const [peptidedata, setPeptides] = useState<peptidedata[] | null>(null)
 
-	const { isLoading, data, refetch } = useQuery({
-		queryKey: ['search', sql],
-		queryFn: async () => {
-			const data = await session.search({ sql })
-			if (Array.isArray(data)) return data || []
-			return []
-		}
-	})
-
-	// 调用后端接口查询蛋白质序列
 	const searchProteinSequence = async () => {
 		console.log('searchclick', entryName, neuropeptideName)
 		console.log('type_entryName:', Object.prototype.toString.call(entryName))
 		if (entryName) {
 			try {
 				console.log('entryName:', entryName)
-				const response = await axios.post('/query/proteinsequence', {
-					protein_id: entryName // 使用 entryName 作为 protein_id
-				})
-				console.log('response:', response)
-				const peptides: Peptide[] = (response.data.peptides || []).map(
+				const response = await axios.post(
+					'/query/proteinsequence',
+					{
+						protein_id: entryName
+					},
+					{
+						headers: {
+							'Accept-Encoding': 'gzip'
+						},
+						responseType: 'arraybuffer' // 设置响应类型为arraybuffer
+					}
+				)
+
+				// 将ArrayBuffer转换为Uint8Array
+				const uint8Array = new Uint8Array(response.data)
+				// 使用pako库解压缩数据
+				const decompressedData = pako.inflate(uint8Array)
+				// 将解压缩后的数据转换为字符串
+				const jsonString = new TextDecoder().decode(decompressedData)
+				// 解析JSON数据
+				const data = JSON.parse(jsonString)
+
+				console.log('response:', data)
+				const peptides: Peptide[] = (data.peptides || []).map(
 					(peptide: any) => ({
 						id: peptide.peptideid,
 						sequence: peptide.peptideSequence,
@@ -59,13 +75,12 @@ const Search = () => {
 
 				console.log('peptides0:', peptides[0])
 
-				const proteinSequence = response.data.proteinsequence
+				const proteinSequence = data.proteinsequence
 				console.log('proteinSequence:', proteinSequence)
 
-				setProteinSequence(response.data.proteinsequence)
+				setProteinSequence(data.proteinsequence)
 				setPeptides(peptides)
 				navigate('/result', { state: { peptidedata: peptides } })
-				// message.success('Protein sequence retrieved successfully!')
 			} catch (error) {
 				message.error('Error fetching data')
 				console.error('Error:', error)
@@ -74,11 +89,24 @@ const Search = () => {
 		if (neuropeptideName) {
 			try {
 				console.log('neuropeptideName:', neuropeptideName)
-				const response = await axios.post('/query/peptidesequence', {
-					protein_id: neuropeptideName // 使用 entryName 作为 protein_id
-				})
-				console.log('response:', response)
-				const peptides: Peptide[] = (response.data.peptides || []).map(
+				const response = await axios.post(
+					'/query/peptidesequence',
+					{
+						protein_id: neuropeptideName // 使用 entryName 作为 protein_id
+					},
+					{
+						headers: {
+							'Accept-Encoding': 'gzip'
+						},
+						responseType: 'arraybuffer' // 设置响应类型为arraybuffer
+					}
+				)
+				const uint8Array = new Uint8Array(response.data)
+				const decompressedData = pako.inflate(uint8Array)
+				const jsonString = new TextDecoder().decode(decompressedData)
+				const data = JSON.parse(jsonString)
+				console.log('response:', data)
+				const peptides: Peptide[] = (data.peptides || []).map(
 					(peptide: any) => ({
 						id: peptide.peptideid,
 						sequence: peptide.peptideSequence,
@@ -135,25 +163,9 @@ const Search = () => {
 	}
 
 	const search = () => {
+		// setQuery()
 		console.log('enrtyName:', entryName)
 		console.log('neuropeptideName:', neuropeptideName)
-		const history: string = formatQuery(query, 'sql')
-		const idx = histories!.findIndex(h => h === history)
-		if (idx > -1) {
-			histories!.splice(idx, 1)
-		}
-		const additionalCondition = [
-			entryName ? `entry_name='${entryName}'` : '',
-			neuropeptideName ? `neuropeptide_name='${neuropeptideName}'` : ''
-		]
-			.filter(Boolean)
-			.join(' AND ')
-		setHistories([history, ...histories!])
-		setSql(
-			`${history} ${additionalCondition ? `AND ${additionalCondition}` : ''}`
-		)
-		refetch()
-
 		if (!neuropeptideName) {
 			console.log('searchProteinSequence')
 			searchProteinSequence()
@@ -166,11 +178,6 @@ const Search = () => {
 		}
 	}
 	const cases = [case1, case2, case3]
-	const handleHistoryClick = (v: string) => {
-		setQuery(parseSQL(v))
-		setSql(v)
-		refetch()
-	}
 
 	return (
 		<div className='query-page py-[20px]'>

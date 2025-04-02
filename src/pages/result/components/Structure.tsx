@@ -18,6 +18,7 @@ export default function Structure({
 		if (!data || !molRef.current) return
 		viewer.current = mol.createViewer(molRef.current)
 		console.log('structure:', data, 'data.neuropeptide:', data.neuropeptide)
+		console.log(Object.prototype.toString.call(data.neuropeptide))
 		viewer.current.addModel(data.neuropeptide, 'pdb') // 使用传入的 PDB 数据
 		viewer.current.zoomTo()
 		viewer.current.render()

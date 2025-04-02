@@ -1,5 +1,4 @@
 import type { ReactElement } from 'react'
-
 interface Properties {
 	error?: Error
 }

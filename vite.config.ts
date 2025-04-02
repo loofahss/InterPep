@@ -59,6 +59,15 @@ export default defineConfig(({ mode }) => {
 				}
 			}
 		},
+		build: {
+			minify: 'terser',
+			terserOptions: {
+				compress: {
+					drop_console: true,
+					drop_debugger: true
+				}
+			}
+		},
 		server: {
 			proxy: {
 				// 代理配置

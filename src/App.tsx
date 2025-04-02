@@ -1,4 +1,3 @@
-import { Query } from '@tanstack/react-query'
 import { ConfigProvider, theme } from 'antd'
 import en_US from 'antd/lib/locale/en_US'
 import zh_CN from 'antd/lib/locale/zh_CN'
@@ -7,15 +6,13 @@ import BrowserRouter from 'components/common/BrowserRouter'
 import 'dayjs/locale/zh-cn'
 import i18n from 'i18next'
 import moment from 'moment'
-import Home from 'pages/home'
-import Search from 'pages/query'
 import type { ReactElement } from 'react'
 import { Suspense, lazy, useEffect } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import { useAppSelector } from 'store/redux-hooks'
 import { selectLanguage, selectTheme } from 'store/slicers/appSlice'
-
-const Container = lazy(async () => import('pages/container'))
+import Container from 'pages/container'
+// const Container = lazy(async () => import('pages/container'))
 
 export default function App(): ReactElement {
 	const themeName = useAppSelector(selectTheme)
