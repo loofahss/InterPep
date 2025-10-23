@@ -19,7 +19,7 @@ const Help = () => {
 			<div className='mt-4'>
 				<h2 className='text-lg font-semibold'>Contact us</h2>
 				<ul>
-					<li>email: support@example.com</li>
+					<li>email: u202217250@hust.edu.cn</li>
 				</ul>
 			</div>
 		</div>
